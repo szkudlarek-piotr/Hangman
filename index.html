@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wisielec</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="left">
+
+        </div>
+        <div id="middle">
+            <div id="secret">
+                TU POWINNO BYĆ TWOJE HASŁO
+            </div>
+            <div id="keyboard">
+
+            </div>
+        </div>
+        <div id="right">
+
+        </div>
+        <script>
+            getRandomLine()
+            const all_cyrylics = "ЙЦУКЕНГШЩЗХЪЭЖДЛОРПАВЫФЯЧСМИТЬБЮ"
+            let keyboard_div = document.getElementById("keyboard")
+            const added_letters = []
+            const ortography = [",", ".", "!", ";", "?", "-", " ", "«"]
+            const guessIt = "Водка - это не мое"
+            let capitalizedGuessIt = guessIt.toUpperCase()
+            console.log(capitalizedGuessIt)
+            for (let i = 0; i < all_cyrylics.length; i++) {
+                bukwa = all_cyrylics[i]
+                let bukva_div = document.createElement("div")
+                bukva_div.setAttribute("id", bukwa)
+                bukva_div.setAttribute("class", "bukwa")
+                bukva_div.setAttribute("onclick", `addLetter("${bukwa}")`)
+                bukva_div.innerHTML = bukwa
+                keyboard_div.appendChild(bukva_div)
+                if (i % 8 === 7) {
+                    keyboard_div.innerHTML += "<br/>"
+                }
+            }
+            function addLetter(letter) {
+                added_letters.push(letter)
+                show_pass()
+            }
+            function show_pass() {
+                let finishFlag = true
+                let string_to_show = ""
+                let secretPass = document.getElementById("secret")
+                for (let i = 0; i < capitalizedGuessIt.length; i++) {
+                    let currentChar = capitalizedGuessIt[i]
+                    if (ortography.includes(currentChar)) {
+                        string_to_show += currentChar
+                    }
+                    else if (added_letters.includes(currentChar)) {
+                        string_to_show += currentChar
+                    }
+                    else {
+                        string_to_show += "_ "
+                        finishFlag = false
+                    }
+                }
+                secretPass.innerHTML = string_to_show
+                if (finishFlag === true) {
+                    secretPass.innerHTML += "<br/> UDAŁO CI SIĘ! GRATULACJE!"
+                }
+            }
+            function getRandomLine() {
+                console.log("dupcia")
+                const xhr = new XMLHttpRequest()
+                xhr.open("GET", "http://localhost:3000/random-line")
+                xhr.onreadystatechange = () => {
+                    const status = xhr.status
+                    const randomLine = xhr.responseText
+                    console.log(randomLine)
+                    console.log("dupcia2")
+                }
+                xhr.send()
+            }
+        </script>
+    </body>
+</html>

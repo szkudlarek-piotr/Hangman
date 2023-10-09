@@ -1,0 +1,46 @@
+body {
+    background-color: yellowgreen;
+}
+#left {
+    min-height: 1000px;
+    width: calc(20% - 2px);
+    display: inline-block;
+}
+#middle {
+    min-height: 1000px;
+    display: inline-block;
+    width: 60%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+#right {
+    min-height: 1000px;
+    width: calc(20% - 2px);
+    display: inline-block;
+}
+#secret {
+    padding-top: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+#keyboard {
+    padding-top: 30px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.bukwa {
+    display: inline-block;
+    border: 2px solid black;
+    margin: 1%;
+    font-size: 25px;
+    text-align: center;
+    width: calc(10% - 2px);
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+}
+.bukwa:hover {
+    cursor: pointer;
+    background-color: #090;
+}
