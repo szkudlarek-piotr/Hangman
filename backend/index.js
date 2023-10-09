@@ -9,7 +9,6 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/random-line', (req, res) => {
-    console.log("dupa")
     const chosenLine = req.query
     console.log(randomLine)
     res.send()
