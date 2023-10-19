@@ -20,13 +20,15 @@
 
         </div>
         <script>
-            getRandomLine()
             const all_cyrylics = "ЙЦУКЕНГШЩЗХЪЭЖДЛОРПАВЫФЯЧСМИТЬБЮ"
             let keyboard_div = document.getElementById("keyboard")
             const added_letters = []
-            const ortography = [",", ".", "!", ";", "?", "-", " ", "«"]
-            const guessIt = "Водка - это не мое"
-            let capitalizedGuessIt = guessIt.toUpperCase()
+            const ortography = [",", ".", "!", ";", "?", "-", "«", "."]
+            let guessIt = ""
+            getRandomLine()
+            //show_pass(guessIt)
+            let capitalizedGuessIt = guessIt.toUpperCase()  
+            
             console.log(capitalizedGuessIt)
             for (let i = 0; i < all_cyrylics.length; i++) {
                 bukwa = all_cyrylics[i]
@@ -42,38 +44,61 @@
             }
             function addLetter(letter) {
                 added_letters.push(letter)
-                show_pass()
+                show_pass(guessIt)
+
             }
-            function show_pass() {
+            function setGuessItVar(word) {
+                guessIt = word
+                show_pass(word)
+
+            }
+            function show_pass(lineToGo) {
+                let line_length = lineToGo.length
+                let lastChar = lineToGo[line_length-1]
+                if (lastChar === " " ||  lastChar === "\n" || lastChar === "\r") {
+                    lineToGo = lineToGo.substring(0, line_length-2)
+                }
+                console.log(lastChar)
+                console.log(`Będziesz zgadywał "${lineToGo}".`)
                 let finishFlag = true
                 let string_to_show = ""
                 let secretPass = document.getElementById("secret")
-                for (let i = 0; i < capitalizedGuessIt.length; i++) {
-                    let currentChar = capitalizedGuessIt[i]
+                let capitalizedLine = lineToGo.toUpperCase()
+                console.log(capitalizedLine)
+                for (let i = 0; i < capitalizedLine.length; i++) {
+                    let currentChar = capitalizedLine[i]
                     if (ortography.includes(currentChar)) {
                         string_to_show += currentChar
                     }
                     else if (added_letters.includes(currentChar)) {
                         string_to_show += currentChar
+                        console.log(currentChar)
+                    }
+                    else if (currentChar === " ") {
+                        string_to_show += "   "
                     }
                     else {
                         string_to_show += "_ "
                         finishFlag = false
                     }
                 }
-                secretPass.innerHTML = string_to_show
                 if (finishFlag === true) {
-                    secretPass.innerHTML += "<br/> UDAŁO CI SIĘ! GRATULACJE!"
+                    string_to_show = `Udało Ci się! Gratulacje!\nHasło brzmiało ${guessIt}.`
                 }
+                secretPass.innerHTML = string_to_show
             }
             function getRandomLine() {
-                console.log("dupcia")
                 const xhr = new XMLHttpRequest()
                 xhr.open("GET", "http://localhost:3000/random-line")
                 xhr.onreadystatechange = () => {
                     const status = xhr.status
-                    const randomLine = xhr.responseText
-                    console.log(randomLine)
+                    if (status === 200 && xhr.readyState == 4) {
+                        const randomLine = xhr.responseText
+                        //console.log(randomLine)
+                        let guessIt = randomLine
+                        show_pass(randomLine)
+                        setGuessItVar(randomLine)
+                    }
                 }
                 xhr.send()
             }

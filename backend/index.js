@@ -9,9 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/random-line', (req, res) => {
-    const chosenLine = req.query
-    console.log(randomLine)
-    res.send()
+    res.send(randomLine())
 })
 
 app.listen(port, () => {
